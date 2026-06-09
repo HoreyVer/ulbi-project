@@ -1812,6 +1812,13 @@
     "mkdirp" "^1.0.4"
     "rimraf" "^3.0.2"
 
+"@playwright/test@^1.60.0":
+  "integrity" "sha512-O71yZIbAh/PxDMNGns37GHBIfrVkEVyn+AXyIa5dOTfb4/xNvRWV+Vv/NMbNCtODB/pO7vLlF2OTmMVLhmr7Ag=="
+  "resolved" "https://registry.npmjs.org/@playwright/test/-/test-1.60.0.tgz"
+  "version" "1.60.0"
+  dependencies:
+    "playwright" "1.60.0"
+
 "@pmmmwh/react-refresh-webpack-plugin@^0.5.1":
   "integrity" "sha512-zZbZeHQDnoTlt2AF+diQT0wsSXpvWiaIOZwBRdltNFhG1+I3ozyaw7U/nBiUwyJ0D+zwdXp0E3bWOl38Ag2BMw=="
   "resolved" "https://registry.npmjs.org/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.5.4.tgz"
@@ -10885,6 +10892,20 @@
   "version" "5.0.0"
   dependencies:
     "find-up" "^5.0.0"
+
+"playwright-core@1.60.0":
+  "integrity" "sha512-9bW6zvX/m0lEbgTKJ6YppOKx8H3VOPBMOCFh2irXFOT4BbHgrx5hPjwJYLT40Lu+4qtD36qKc/Hn56StUW57IA=="
+  "resolved" "https://registry.npmjs.org/playwright-core/-/playwright-core-1.60.0.tgz"
+  "version" "1.60.0"
+
+"playwright@1.60.0":
+  "integrity" "sha512-hheHdokM8cdqCb0lcE3s+zT4t4W+vvjpGxsZlDnikarzx8tSzMebh3UiFtgqwFwnTnjYQcsyMF8ei2mCO/tpeA=="
+  "resolved" "https://registry.npmjs.org/playwright/-/playwright-1.60.0.tgz"
+  "version" "1.60.0"
+  dependencies:
+    "playwright-core" "1.60.0"
+  optionalDependencies:
+    "fsevents" "2.3.2"
 
 "pngjs@^3.3.3":
   "integrity" "sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w=="
