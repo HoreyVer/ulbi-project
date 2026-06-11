@@ -12,6 +12,6 @@ module.exports = {
         builder: 'webpack5',
     },
     features: {
-        buildStoriesJson: true, // <-- ОБЯЗАТЕЛЬНО ДОБАВИТЬ ЭТУ СТРОКУ
+        buildStoriesJson: true, // <-- ОБЯЗАТЕЛЬНО ДОБАВИТЬ ЭТУ СТРОКУ!
     },
 };
