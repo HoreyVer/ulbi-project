@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test('Скриншоты всех сторисов', async ({ page }) => {
-    // Увеличиваем таймаут для этого тяжелого теста до 5 минут
     test.setTimeout(300000);
 
     // Получаем список всех сторисов через API Storybook

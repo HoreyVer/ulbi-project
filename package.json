@@ -12,10 +12,10 @@
     "lint:scss": "npx stylelint \"**/*.scss\"",
     "lint:scss:fix": "npx stylelint \"**/*.scss\" --fix",
     "test:unit": "jest --config ./config/jest/jest.config.ts",
-    "test:ui": "npx playwright test tests/storybook.spec.ts",
+    "test:ui:ci": "npx playwright test tests/storybook.spec.ts",
     "test:ui:ok": "npx playwright test tests/storybook.spec.ts --update-snapshots",
     "storybook": "start-storybook -p 6006 -c ./config/storybook",
-    "storybook-build": "build-storybook -c ./config/storybook"
+    "storybook:build": "build-storybook -c ./config/storybook"
   },
   "keywords": [],
   "author": "",
