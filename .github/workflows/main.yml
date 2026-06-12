@@ -50,6 +50,6 @@ jobs:
       - name: Install Playwright Chromium Shell
         run: npx playwright install chromium --with-deps
 
-      # 4. Запускаем тесты в чистом виде, без лишних переменных окружения
+      # 4. Запускаем тесты в чистом виде, без лишних переменных окружения.
       - name: screenshot testing
         run: npm run test:ui:ci
