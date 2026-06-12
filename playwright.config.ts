@@ -7,10 +7,10 @@ export default defineConfig({
         trace: 'on-first-retry',
     },
     webServer: {
-        // Команда для автоматического запуска Storybook перед тестами
-        command: 'npm run storybook',
-        url: 'http://localhost:6006',
+        command: 'npm run preview-storybook',
+        port: 6006,
         reuseExistingServer: !process.env.CI,
+        timeout: 120_000,
     },
     projects: [
         {

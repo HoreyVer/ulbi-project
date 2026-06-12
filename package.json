@@ -15,7 +15,8 @@
     "test:ui:ci": "npx playwright test tests/storybook.spec.ts",
     "test:ui:ok": "npx playwright test tests/storybook.spec.ts --update-snapshots",
     "storybook": "start-storybook -p 6006 -c ./config/storybook",
-    "storybook:build": "build-storybook -c ./config/storybook"
+    "storybook:build": "build-storybook -c ./config/storybook",
+    "preview-storybook": "npx http-server storybook-static -p 6006"
   },
   "keywords": [],
   "author": "",
