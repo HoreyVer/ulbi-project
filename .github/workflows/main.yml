@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 1. Запускаем проект на вашей обязательной Node.js 17
       - name: Staring Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
@@ -38,21 +39,20 @@ jobs:
       - name: build storybook
         run: npm run storybook:build
 
+      # 2. Устанавливаем системный Chromium через APT
+      - name: Install Chromium via APT
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser
+
+      # 3. ВРЕМЕННО переключаем Node.js на v18 исключительно для запуска Playwright
+      - name: Switch to Node.js 18 for Playwright
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 4. Запускаем тесты (теперь они гарантированно пройдут проверку версии)
       - name: screenshot testing
         env:
-            PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: /usr/bin/chromium-browser
-            NODE_OPTIONS: "--experimental-fetch --require=./playwright-polyfill.js"
-        run: |
-            echo "
-            // Обманываем проверку версии Playwright
-            Object.defineProperty(process, 'version', { value: 'v18.0.0', writable: true });
-            
-            // Добавляем недостающие классы
-            globalThis.GlobalRequest = globalThis.Request;
-            const webStreams = require('node:stream/web');
-            globalThis.TransformStream = webStreams.TransformStream;
-            globalThis.ReadableStream = webStreams.ReadableStream;
-            globalThis.WritableStream = webStreams.WritableStream;
-            " > playwright-polyfill.js
-            
-            npm run test:ui:ci
+          PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: /usr/bin/chromium-browser
+        run: npm run test:ui:ci
