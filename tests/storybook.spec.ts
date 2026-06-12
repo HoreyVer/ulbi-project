@@ -17,7 +17,7 @@ test('Скриншоты всех сторисов', async ({ page }) => {
     for (const story of stories) {
         // eslint-disable-next-line no-await-in-loop
         await page.goto(
-            `http://localhost:6006/iframe.html?id=${story.id}&viewMode=story`
+            `http://localhost:6006/iframe.html?id=${story.id}&viewMode=story`,
         );
 
         // Используем универсальный селектор: проверяем и #storybook-root, и #root
