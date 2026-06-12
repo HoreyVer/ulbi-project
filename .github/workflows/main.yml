@@ -54,5 +54,5 @@ jobs:
       # 4. Запускаем тесты (теперь они гарантированно пройдут проверку версии)
       - name: screenshot testing
         env:
-          PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: /usr/bin/chromium-browser
+            PLAYWRIGHT_CHROMIUM_HEADLESS_SHELL_EXECUTABLE_PATH: /usr/bin/chromium-browser
         run: npm run test:ui:ci
