@@ -54,10 +54,10 @@ jobs:
 
       # 4. Запускаем тесты в чистом виде, без лишних переменных окружения.
       - name: Run UI tests
-        run: npm run test:ui:update
+        run: npm run test:ui:ci
 
-      - name: Commit updated screenshots
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: update storybook screenshots from CI [skip ci]"
-          file_pattern: "tests/storybook.spec.ts-snapshots/**"
+#      - name: Commit updated screenshots
+#        uses: stefanzweifel/git-auto-commit-action@v5
+#        with:
+#          commit_message: "chore: update storybook screenshots from CI [skip ci]"
+#          file_pattern: "tests/storybook.spec.ts-snapshots/**"
