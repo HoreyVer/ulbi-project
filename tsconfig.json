@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "skipLibCheck": true,
     "outDir": "./dist/",
     // Подсвечивает все места, где не указан тип
     // Однако это не означает, что теперь вовсе нельзя использовать any.
@@ -32,7 +33,6 @@
     // можно писать такой
     // import React from 'react';
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
   },
   "ts-node": {
     "compilerOptions": {
