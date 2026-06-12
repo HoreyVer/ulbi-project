@@ -38,17 +38,18 @@ jobs:
       - name: build storybook
         run: npm run storybook:build
 
-      - name: Install Chromium via APT
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser
-
-      # Создаем файл-полифил и принудительно внедряем его в процесс Node.js
       - name: screenshot testing
         env:
-          PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: /usr/bin/chromium-browser
-          # Передаем флаги: включить fetch и автоматически загрузить наш полифил
-          NODE_OPTIONS: "--experimental-fetch --require=./playwright-polyfill.js"
+            PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: /usr/bin/chromium-browser
+            NODE_OPTIONS: "--experimental-fetch --require=./playwright-polyfill.js"
         run: |
-          echo "globalThis.GlobalRequest = globalThis.Request;" > playwright-polyfill.js
-          npm run test:ui:ci
+            # Внедряем как Request, так и все классы Streams API из встроенного модуля Node.js
+            echo "
+            globalThis.GlobalRequest = globalThis.Request;
+            const webStreams = require('node:stream/web');
+            globalThis.TransformStream = webStreams.TransformStream;
+            globalThis.ReadableStream = webStreams.ReadableStream;
+            globalThis.WritableStream = webStreams.WritableStream;
+            " > playwright-polyfill.js
+            
+            npm run test:ui:ci
