@@ -43,8 +43,11 @@ jobs:
             PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: /usr/bin/chromium-browser
             NODE_OPTIONS: "--experimental-fetch --require=./playwright-polyfill.js"
         run: |
-            # Внедряем как Request, так и все классы Streams API из встроенного модуля Node.js
             echo "
+            // Обманываем проверку версии Playwright
+            Object.defineProperty(process, 'version', { value: 'v18.0.0', writable: true });
+            
+            // Добавляем недостающие классы
             globalThis.GlobalRequest = globalThis.Request;
             const webStreams = require('node:stream/web');
             globalThis.TransformStream = webStreams.TransformStream;
