@@ -1,4 +1,6 @@
 name: linting, testing, building
+permissions:
+  contents: write
 on:
   push:
     branches: [ add-playwright ]
@@ -53,3 +55,9 @@ jobs:
       # 4. Запускаем тесты в чистом виде, без лишних переменных окружения.
       - name: Run UI tests
         run: npm run test:ui:update
+
+      - name: Commit updated screenshots
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update storybook screenshots from CI [skip ci]"
+          file_pattern: "tests/storybook.spec.ts-snapshots/**"
