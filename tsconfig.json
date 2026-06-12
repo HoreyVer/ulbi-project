@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": [],
     "skipLibCheck": true,
     "outDir": "./dist/",
     // Подсвечивает все места, где не указан тип
