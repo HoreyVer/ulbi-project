@@ -24,7 +24,7 @@ test('Скриншоты всех сторисов', async ({ page }) => {
         // eslint-disable-next-line no-await-in-loop
         const rootSelector = await page.locator('#storybook-root, #root').first();
 
-        // Ожидаем появления самого контейнера, а не его детей (это быстрее и надежнее)
+        // Ожидаем появления самого контейнера, а не его детей (это быстрее и надежнее)!
         // eslint-disable-next-line no-await-in-loop
         await rootSelector.waitFor({ state: 'visible', timeout: 5000 });
 
