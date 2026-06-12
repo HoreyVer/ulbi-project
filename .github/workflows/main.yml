@@ -7,24 +7,18 @@ on:
 jobs:
   pipeline:
     runs-on: ubuntu-22.04
-
-    # Запускаем пайплайн внутри готового окружения со всеми библиотеками Linux
-    container:
-      image: ://microsoft.com
-
     strategy:
       matrix:
         node-version: [ 17.x ]
 
     steps:
-      # Обновлено до v4 для стабильной работы в контейнерах
       - uses: actions/checkout@v4
 
       - name: Staring Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4 # Обновлено до v4
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm' # Включено кэширование для ускорения последующих запусков
+          cache: 'npm'
 
       - name: install modules
         run: npm install
@@ -44,7 +38,12 @@ jobs:
       - name: build storybook
         run: npm run storybook:build
 
-      # ШАГИ УСТАНОВКИ БРАУЗЕРОВ И APT-GET УДАЛЕНЫ (они уже есть в контейнере)
+      - name: Install Chromium via APT
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser
 
       - name: screenshot testing
+        env:
+          PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: /usr/bin/chromium-browser
         run: npm run test:ui:ci
