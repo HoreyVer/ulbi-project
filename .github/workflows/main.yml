@@ -43,7 +43,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y chromium-browser
 
+      # Создаем файл-полифил и принудительно внедряем его в процесс Node.js
       - name: screenshot testing
         env:
           PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: /usr/bin/chromium-browser
-        run: npm run test:ui:ci
+          # Передаем флаги: включить fetch и автоматически загрузить наш полифил
+          NODE_OPTIONS: "--experimental-fetch --require=./playwright-polyfill.js"
+        run: |
+          echo "globalThis.GlobalRequest = globalThis.Request;" > playwright-polyfill.js
+          npm run test:ui:ci
