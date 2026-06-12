@@ -39,20 +39,17 @@ jobs:
       - name: build storybook
         run: npm run storybook:build
 
-      # 2. Устанавливаем системный Chromium через APT
-      - name: Install Chromium via APT
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser
-
-      # 3. ВРЕМЕННО переключаем Node.js на v18 исключительно для запуска Playwright
+      # 2. Переключаем Node.js на v18 (этот шаг у вас уже есть и отлично работает)
       - name: Switch to Node.js 18 for Playwright
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # 4. Запускаем тесты (теперь они гарантированно пройдут проверку версии)
+      # 3. Теперь, когда Node.js обновлена, команда выполнится БЕЗ ошибок версии!
+      # Флаг --with-deps установит недостающие Linux-библиотеки для headless_shell
+      - name: Install Playwright Chromium Shell
+        run: npx playwright install chromium --with-deps
+
+      # 4. Запускаем тесты в чистом виде, без лишних переменных окружения
       - name: screenshot testing
-        env:
-            PLAYWRIGHT_CHROMIUM_HEADLESS_SHELL_EXECUTABLE_PATH: /usr/bin/chromium-browser
         run: npm run test:ui:ci
