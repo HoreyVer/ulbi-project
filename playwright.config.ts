@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
+    testDir: './tests',
+    testMatch: '**/*.spec.ts',
     use: {
         // URL, по которому доступен Storybook
         baseURL: 'http://localhost:6006',
