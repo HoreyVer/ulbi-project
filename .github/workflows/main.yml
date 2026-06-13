@@ -3,7 +3,7 @@ permissions:
   contents: write
 on:
   push:
-    branches: [ add-playwright ]
+    branches: [ feature/28/sidebar ]
   pull_request:
     branches: [ master ]
 jobs:
