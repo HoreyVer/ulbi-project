@@ -9,10 +9,10 @@ export default defineConfig({
         trace: 'on-first-retry',
     },
     webServer: {
-        command: 'npm run preview-storybook',
+        command: 'npm run storybook:build && npm run preview-storybook',
         port: 6006,
         reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
+        timeout: 180_000,
     },
     projects: [
         {
