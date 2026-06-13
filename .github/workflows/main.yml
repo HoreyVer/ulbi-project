@@ -34,12 +34,15 @@ jobs:
 
       - name: linting css
         run: npm run lint:scss
+        if: always()
 
       - name: unit testing
         run: npm run test:unit
+        if: always()
 
       - name: build storybook
         run: npm run storybook:build
+        if: always()
 
       # 2. Переключаем Node.js на v18 (этот шаг у вас уже есть и отлично работает)
       - name: Switch to Node.js 18 for Playwright
@@ -55,6 +58,7 @@ jobs:
       # 4. Запускаем тесты в чистом виде, без лишних переменных окружения.
       - name: Run UI tests
         run: npm run test:ui:ci
+        if: always()
 
 #      - name: Commit updated screenshots
 #        uses: stefanzweifel/git-auto-commit-action@v5
