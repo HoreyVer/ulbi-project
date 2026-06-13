@@ -1,0 +1,63 @@
+name: linting, testing, building
+permissions:
+  contents: write
+on:
+  push:
+    branches: [ add-playwright ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  pipeline:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node-version: [ 17.x ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1. Запускаем проект на вашей обязательной Node.js 17
+      - name: Staring Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: install modules
+        run: npm install
+
+      - name: build production project
+        run: npm run build:prod
+
+      - name: linting typescript
+        run: npm run lint:ts
+
+      - name: linting css
+        run: npm run lint:scss
+
+      - name: unit testing
+        run: npm run test:unit
+
+      - name: build storybook
+        run: npm run storybook:build
+
+      # 2. Переключаем Node.js на v18 (этот шаг у вас уже есть и отлично работает)
+      - name: Switch to Node.js 18 for Playwright
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 3. Теперь, когда Node.js обновлена, команда выполнится БЕЗ ошибок версии!
+      # Флаг --with-deps установит недостающие Linux-библиотеки для headless_shell
+      - name: Install Playwright Chromium Shell
+        run: npx playwright install chromium --with-deps
+
+      # 4. Запускаем тесты в чистом виде, без лишних переменных окружения.
+      - name: Run UI tests
+        run: npm run test:ui:ci
+
+#      - name: Commit updated screenshots
+#        uses: stefanzweifel/git-auto-commit-action@v5
+#        with:
+#          commit_message: "chore: update storybook screenshots from CI [skip ci]"
+#          file_pattern: "tests/storybook.spec.ts-snapshots/**"
