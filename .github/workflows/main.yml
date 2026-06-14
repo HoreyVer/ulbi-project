@@ -58,18 +58,17 @@ jobs:
       # 4. Запускаем тесты в чистом виде, без лишних переменных окружения.
       - name: Run UI tests
         run: npm run test:ui:ci
-        if: always()
 
       - name: Upload Playwright Report
-        # uses: actions/upload-artifact@v4 — используем актуальный экшен загрузки
+        # uses: actions/upload-artifact@v4 — используем именно 4 версию
         uses: actions/upload-artifact@v4
-        # if: always() — это критически важно! Инструкция говорит выполнять шаг,
-        # даже если предыдущий шаг с тестами завершился ошибкой (упал)
+        # if: always() — гарантирует запуск шага даже при падении тестов
         if: always()
         with:
           name: playwright-report
-          # Путь к папке, где Playwright сохраняет скриншоты (actual/diff/expected).
+          # Указываем точный путь к родительской папке с результатами
           path: test-results/
+          # Если папка test-results пуста, попробуйте путь: playwright-report/
           retention-days: 7
 
 #      - name: Commit updated screenshots
