@@ -60,6 +60,18 @@ jobs:
         run: npm run test:ui:ci
         if: always()
 
+      - name: Upload Playwright Report
+        # uses: actions/upload-artifact@v4 — используем актуальный экшен загрузки
+        uses: actions/upload-artifact@v4
+        # if: always() — это критически важно! Инструкция говорит выполнять шаг,
+        # даже если предыдущий шаг с тестами завершился ошибкой (упал)
+        if: always()
+        with:
+          name: playwright-report
+          # Путь к папке, где Playwright сохраняет скриншоты (actual/diff/expected)
+          path: test-results/
+          retention-days: 7
+
 #      - name: Commit updated screenshots
 #        uses: stefanzweifel/git-auto-commit-action@v5
 #        with:
