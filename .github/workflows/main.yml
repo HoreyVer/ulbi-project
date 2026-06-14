@@ -1,9 +1,11 @@
 name: linting, testing, building
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 permissions:
   contents: write
 on:
   push:
-    branches: [ add-playwright ]
+    branches: [ feature/28/sidebar ]
   pull_request:
     branches: [ master ]
 jobs:
@@ -34,12 +36,15 @@ jobs:
 
       - name: linting css
         run: npm run lint:scss
+        if: always()
 
       - name: unit testing
         run: npm run test:unit
+        if: always()
 
       - name: build storybook
         run: npm run storybook:build
+        if: always()
 
       # 2. Переключаем Node.js на v18 (этот шаг у вас уже есть и отлично работает)
       - name: Switch to Node.js 18 for Playwright
@@ -55,6 +60,18 @@ jobs:
       # 4. Запускаем тесты в чистом виде, без лишних переменных окружения.
       - name: Run UI tests
         run: npm run test:ui:ci
+
+      - name: Upload Playwright Report
+        # uses: actions/upload-artifact@v4 — используем именно 4 версию
+        uses: actions/upload-artifact@v4
+        # if: always() — гарантирует запуск шага даже при падении тестов
+        if: always()
+        with:
+          name: playwright-report
+          # Указываем точный путь к родительской папке с результатами
+          path: test-results/
+          # Если папка test-results пуста, попробуйте путь: playwright-report/
+          retention-days: 7
 
 #      - name: Commit updated screenshots
 #        uses: stefanzweifel/git-auto-commit-action@v5
