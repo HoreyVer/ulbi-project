@@ -59,7 +59,7 @@ jobs:
 
       # 4. Запускаем тесты в чистом виде, без лишних переменных окружения.
       - name: Run UI tests
-        run: npm run test:ui:ci
+        run: npm run test:ui:ci -- --update-snapshots
 
       - name: Upload Playwright Report
         # uses: actions/upload-artifact@v4 — используем именно 4 версию
