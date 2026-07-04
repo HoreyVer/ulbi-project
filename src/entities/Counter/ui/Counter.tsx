@@ -1,7 +1,7 @@
-import { Button } from 'shared/ui/Button/Button';
 import { useTranslation } from 'react-i18next';
 import { observer } from 'mobx-react-lite';
-import { counterStore } from 'entities/Counter';
+import { Button } from '../../../shared/ui/Button/Button';
+import { counterStore } from '../model/CounterStore';
 
 export const Counter = observer(() => {
     const { t } = useTranslation();

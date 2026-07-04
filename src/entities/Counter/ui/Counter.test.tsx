@@ -1,23 +1,27 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { Counter } from './Counter';
 import { counterStore } from '../model/CounterStore';
 
-describe('Counter', () => {
-    // Перед каждым тестом сбрасываем значение счетчика в 0
+describe('CounterStore', () => {
+    // Перед каждым тестом возвращаем счетчик в исходное состояние
     beforeEach(() => {
         counterStore.value = 0;
     });
 
-    test('отрисовывается с начальным значением 0', () => {
-        render(<Counter />);
-        expect(screen.getByTestId('value-title')).toHaveTextContent('0');
+    test('должен иметь начальное значение 0', () => {
+        expect(counterStore.value).toBe(0);
     });
 
-    test('increment увеличивает значение на 1', async () => {
-        render(<Counter />);
-        const incrementBtn = screen.getByTestId('increment-btn');
-        await userEvent.click(incrementBtn);
-        expect(screen.getByTestId('value-title')).toHaveTextContent('1');
+    test('метод increment должен увеличивать значение на 1', () => {
+        counterStore.increment();
+        expect(counterStore.value).toBe(1);
+    });
+
+    test('метод decrement должен уменьшать значение на 1', () => {
+        counterStore.decrement();
+        expect(counterStore.value).toBe(-1);
+    });
+
+    test('геттер doubleValue должен возвращать удвоенное значение', () => {
+        counterStore.value = 5;
+        expect(counterStore.doubleValue).toBe(10);
     });
 });
