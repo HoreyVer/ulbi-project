@@ -2,62 +2,59 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonTheme } from 'shared/ui/Button/Button';
 import { Input } from 'shared/ui/Input/Input';
-import { useDispatch, useSelector } from 'react-redux';
-import { memo, useCallback } from 'react';
-import { loginActions } from 'features/AuthByUsername/model/slice/loginSlice';
-import { getLoginState } from 'features/AuthByUsername/model/selectors/getLoginState/getLoginState';
-import { loginByUsername } from 'features/AuthByUsername/model/services/loginByUsername/loginByUsername';
+import { useCallback } from 'react';
 import { TextTheme, Text } from 'shared/ui/Text/Text';
-
+import { loginStore } from 'features/AuthByUsername';
+import { observer } from 'mobx-react-lite';
 import cls from './LoginForm.module.scss';
 
 interface LoginFormProps {
     className?: string;
 }
 
-export const LoginForm = memo(({ className }: LoginFormProps) => {
+export const LoginForm = observer(({ className }: LoginFormProps) => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const {
-        username, password, error, isLoading,
-    } = useSelector(getLoginState);
 
     const onChangeUsername = useCallback((value: string) => {
-        dispatch(loginActions.setUsername(value));
-    }, [dispatch]);
+        loginStore.setUsername(value);
+    }, []);
 
     const onChangePassword = useCallback((value: string) => {
-        dispatch(loginActions.setPassword(value));
-    }, [dispatch]);
+        loginStore.setPassword(value);
+    }, []);
 
     const onLoginClick = useCallback(() => {
-        dispatch(loginByUsername({ username, password }));
-    }, [dispatch, username, password]);
+        // 3. Метод сам заберет username и password из стора, зависимости [] пустые
+        loginStore.loginByUsername();
+    }, []);
 
     return (
         <div className={classNames(cls.LoginForm, {}, [className])}>
             <Text title={t('Форма авторизации')} />
-            {error && <Text text={error} theme={TextTheme.ERROR} />}
+
+            {/* 4. Читаем все данные напрямую из loginStore через точку */}
+            {loginStore.error && <Text text={loginStore.error} theme={TextTheme.ERROR} />}
+
             <Input
                 autoFocus
                 type="text"
                 className={cls.input}
                 placeholder={t('Введите username')}
                 onChange={onChangeUsername}
-                value={username}
+                value={loginStore.username}
             />
             <Input
-                type="text"
+                type="password" // Лучше сменить на password, чтобы скрывать символы
                 className={cls.input}
                 placeholder={t('Введите пароль')}
                 onChange={onChangePassword}
-                value={password}
+                value={loginStore.password}
             />
             <Button
                 theme={ButtonTheme.OUTLINE}
                 className={cls.loginBtn}
                 onClick={onLoginClick}
-                disabled={isLoading}
+                disabled={loginStore.isLoading}
             >
                 {t('Войти')}
             </Button>

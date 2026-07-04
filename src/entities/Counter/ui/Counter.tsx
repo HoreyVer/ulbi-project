@@ -1,37 +1,26 @@
 import { Button } from 'shared/ui/Button/Button';
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { counterActions } from '../model/slice/counterSlice';
-import { getCounterValue } from '../model/selectors/getCounterValue/getCounterValue';
+import { observer } from 'mobx-react-lite';
+import { counterStore } from 'entities/Counter';
 
-export const Counter = () => {
-    const dispatch = useDispatch();
-    const counterValue = useSelector(getCounterValue);
+export const Counter = observer(() => {
     const { t } = useTranslation();
-
-    const increment = () => {
-        dispatch(counterActions.increment());
-    };
-
-    const decrement = () => {
-        dispatch(counterActions.decrement());
-    };
 
     return (
         <div>
-            <h1 data-testid="value-title">{counterValue}</h1>
+            <h1 data-testid="value-title">{counterStore.value}</h1>
             <Button
-                onClick={increment}
+                onClick={() => counterStore.increment()}
                 data-testid="increment-btn"
             >
                 {t('increment')}
             </Button>
             <Button
                 data-testid="decrement-btn"
-                onClick={decrement}
+                onClick={() => counterStore.decrement()}
             >
                 {t('decrement')}
             </Button>
         </div>
     );
-};
+});

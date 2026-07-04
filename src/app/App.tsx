@@ -5,19 +5,21 @@ import { useTheme } from 'app/providers/ThemeProvider';
 import { AppRouter } from 'app/providers/router';
 import { Navbar } from 'widgets/Navbar';
 import { Sidebar } from 'widgets/Sidebar';
-import { useDispatch } from 'react-redux';
-import { userActions } from 'entities/User';
+import { userStore } from 'entities/User';
+// 1. Импортируем observer
+import { observer } from 'mobx-react-lite';
 
-function App() {
+// 2. Оборачиваем весь компонент App
+const App = observer(() => {
     const { theme } = useTheme();
-    const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(userActions.initAuthData());
-    }, [dispatch]);
+        // Отработает один раз при старте
+        userStore.initAuthData();
+    }, []); // Оставляем пустым!
 
     return (
-        <div className={classNames('app', {}, [])}>
+        <div className={classNames('app', {}, [theme])}>
             <Suspense fallback="">
                 <Navbar />
                 <div className="content-page">
@@ -27,6 +29,6 @@ function App() {
             </Suspense>
         </div>
     );
-}
+});
 
 export default App;

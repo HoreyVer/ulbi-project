@@ -6,6 +6,7 @@
   },
   "decrement": "decrement",
   "increment": "increment",
+  "plus 3": "plus 3",
   "throw error": "throw error",
   "Введите username": "Введите username",
   "Введите пароль": "Введите пароль",

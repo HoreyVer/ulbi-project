@@ -11,6 +11,11 @@ i18n
         interpolation: {
             escapeValue: false, // not needed for react!!
         },
+        // ОТКЛЮЧАЕМ SUSPENSE ДЛЯ ТЕСТОВОЙ СРЕДЫ (STORYBOOK):
+        react: {
+            useSuspense: false,
+        },
+        // Пустой объект ресурсов, чтобы i18n работал мгновенно без загрузки файлов
         resources: { ru: { translations: {} } },
     });
 
