@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react';
 import { Button, ButtonTheme } from 'shared/ui/Button/Button';
 import { LoginModal } from 'features/AuthByUsername';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserAuthData, userActions } from 'entities/User';
+import useUserStore from 'entities/User/model/store/userStore';
 import cls from './Navbar.module.scss';
 
 interface NavbarProps {
@@ -15,8 +15,7 @@ interface NavbarProps {
 export const Navbar = ({ className }: NavbarProps) => {
     const { t } = useTranslation();
     const [isAuthModal, setIsAuthModal] = useState(false);
-    const authData = useSelector(getUserAuthData);
-    const dispatch = useDispatch();
+    const authData = useUserStore((state) => state.authData);
     const onCloseModal = useCallback(() => {
         setIsAuthModal(false);
     }, []);
@@ -25,9 +24,11 @@ export const Navbar = ({ className }: NavbarProps) => {
         setIsAuthModal(true);
     }, []);
 
+    const logout = useUserStore((state) => state.logout);
+
     const onLogout = useCallback(() => {
-        dispatch(userActions.logout());
-    }, [dispatch]);
+        logout();
+    }, [logout]);
 
     if (authData) {
         return (

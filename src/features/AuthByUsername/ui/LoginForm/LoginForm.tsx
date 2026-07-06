@@ -2,13 +2,10 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonTheme } from 'shared/ui/Button/Button';
 import { Input } from 'shared/ui/Input/Input';
-import { useDispatch, useSelector } from 'react-redux';
 import { memo, useCallback } from 'react';
-import { loginActions } from 'features/AuthByUsername/model/slice/loginSlice';
-import { getLoginState } from 'features/AuthByUsername/model/selectors/getLoginState/getLoginState';
-import { loginByUsername } from 'features/AuthByUsername/model/services/loginByUsername/loginByUsername';
 import { TextTheme, Text } from 'shared/ui/Text/Text';
 
+import useLoginStore from 'features/AuthByUsername/model/store/loginStore';
 import cls from './LoginForm.module.scss';
 
 interface LoginFormProps {
@@ -17,22 +14,30 @@ interface LoginFormProps {
 
 export const LoginForm = memo(({ className }: LoginFormProps) => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const {
-        username, password, error, isLoading,
-    } = useSelector(getLoginState);
 
+    // ✅ 1. РЕАКТИВНО достаем все нужные переменные через хук Zustand
+    const username = useLoginStore((state) => state.username);
+    const password = useLoginStore((state) => state.password);
+    const isLoading = useLoginStore((state) => state.isLoading);
+    const error = useLoginStore((state) => state.error);
+
+    // ✅ 2. Достаем функции-экшены тоже через хук стора
+    const setUsername = useLoginStore((state) => state.setUsername);
+    const setPassword = useLoginStore((state) => state.setPassword);
+    const loginByUsername = useLoginStore((state) => state.loginByUsername);
+
+    // ✅ 3. Привязываем экшены в колбэки (не забываем указать их в зависимостях)
     const onChangeUsername = useCallback((value: string) => {
-        dispatch(loginActions.setUsername(value));
-    }, [dispatch]);
+        setUsername(value);
+    }, [setUsername]);
 
     const onChangePassword = useCallback((value: string) => {
-        dispatch(loginActions.setPassword(value));
-    }, [dispatch]);
+        setPassword(value);
+    }, [setPassword]);
 
     const onLoginClick = useCallback(() => {
-        dispatch(loginByUsername({ username, password }));
-    }, [dispatch, username, password]);
+        loginByUsername();
+    }, [loginByUsername]);
 
     return (
         <div className={classNames(cls.LoginForm, {}, [className])}>
@@ -47,7 +52,7 @@ export const LoginForm = memo(({ className }: LoginFormProps) => {
                 value={username}
             />
             <Input
-                type="text"
+                type="password" /* 💡 Изменили на password, чтобы скрывать точки при вводе */
                 className={cls.input}
                 placeholder={t('Введите пароль')}
                 onChange={onChangePassword}

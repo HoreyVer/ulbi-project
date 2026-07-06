@@ -5,16 +5,14 @@ import { useTheme } from 'app/providers/ThemeProvider';
 import { AppRouter } from 'app/providers/router';
 import { Navbar } from 'widgets/Navbar';
 import { Sidebar } from 'widgets/Sidebar';
-import { useDispatch } from 'react-redux';
-import { userActions } from 'entities/User';
+import useUserStore from 'entities/User/model/store/userStore';
 
 function App() {
     const { theme } = useTheme();
-    const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(userActions.initAuthData());
-    }, [dispatch]);
+        useUserStore.getState().initAuthData();
+    }, []);
 
     return (
         <div className={classNames('app', {}, [])}>

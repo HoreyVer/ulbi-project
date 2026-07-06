@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { LoginForm } from 'features/AuthByUsername/ui/LoginForm/LoginForm';
-import { StoreDecorator } from 'shared/config/storybook/StoreDecorator/StoreDecorator';
+import useLoginStore from 'features/AuthByUsername/model/store/loginStore';
 
 export default {
     title: 'features/LoginForm',
@@ -11,23 +11,35 @@ export default {
     },
 } as ComponentMeta<typeof LoginForm>;
 
-const Template: ComponentStory<typeof LoginForm> = (args) => <LoginForm {...args} />;
-
-export const Primary = Template.bind({});
+export const Primary: ComponentStory<typeof LoginForm> = (args) => {
+    useLoginStore.setState({
+        username: '',
+        password: '',
+        isLoading: false,
+        error: undefined,
+    });
+    return <LoginForm {...args} />;
+};
 Primary.args = {};
 
-Primary.decorators = [StoreDecorator({
-    loginForm: { username: '123', password: 'asd' },
-})];
+export const WithError: ComponentStory<typeof LoginForm> = (args) => {
+    useLoginStore.setState({
+        username: 'admin',
+        password: '123',
+        isLoading: false,
+        error: 'Вы ввели неверный логин или пароль',
+    });
+    return <LoginForm {...args} />;
+};
+WithError.args = {};
 
-export const withError = Template.bind({});
-withError.args = {};
-withError.decorators = [StoreDecorator({
-    loginForm: { username: '123', password: 'asd', error: 'error' },
-})];
-
-export const Loading = Template.bind({});
+export const Loading: ComponentStory<typeof LoginForm> = (args) => {
+    useLoginStore.setState({
+        username: 'admin',
+        password: '123',
+        isLoading: true,
+        error: undefined,
+    });
+    return <LoginForm {...args} />;
+};
 Loading.args = {};
-Loading.decorators = [StoreDecorator({
-    loginForm: { username: '123', password: 'asd', error: 'error' },
-})];
